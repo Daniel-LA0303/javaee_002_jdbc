@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="JDBC_Basics" />
         <module name="JDBC_Transacciones" />
+        <module name="JDBC_Transacciones_Pool" />
       </profile>
     </annotationProcessing>
   </component>
