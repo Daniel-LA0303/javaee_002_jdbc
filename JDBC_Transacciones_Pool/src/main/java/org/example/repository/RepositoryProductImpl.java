@@ -18,7 +18,7 @@ public class RepositoryProductImpl implements RepositoryProduct{
     }
     //despues de categoria
     @Override
-    public List findAll() {
+    public List findAll() throws SQLException {
 
         List<Producto> productos = new ArrayList<>();
 
@@ -33,15 +33,13 @@ public class RepositoryProductImpl implements RepositoryProduct{
                 Producto producto = crearProducto(res);
                 productos.add(producto);
             }
-        } catch (SQLException e){
-            e.printStackTrace();
         }
 
         return productos;
     }
 
     @Override
-    public Producto findById(int id){
+    public Producto findById(int id) throws SQLException {
         Producto producto = null;
         try(Connection conn = getConnection();
             PreparedStatement stmt = conn
@@ -55,15 +53,13 @@ public class RepositoryProductImpl implements RepositoryProduct{
                 producto = crearProducto(res);
             }
 
-        } catch (SQLException e){
-            e.printStackTrace();
         }
 
         return producto;
     }
 
     @Override
-    public void save(Object o) {
+    public Producto save(Object o) throws SQLException {
         String sql = "insert into productos(nombre, precio, categoria_id, fecha_registro, sku) values(?, ?, ?, ?, ?)";
         try(
                 Connection conn = getConnection();
@@ -75,13 +71,13 @@ public class RepositoryProductImpl implements RepositoryProduct{
             stmt.setDate(4, new Date(p.getFechaRegistro().getTime()));
             stmt.setString(5, p.getSku());
             stmt.executeUpdate();
-        } catch (SQLException e){
-            e.printStackTrace();
+
+            return p;
         }
     }
 
     @Override
-    public void update(Object o) {
+    public void update(Object o) throws SQLException {
         String sql = "update productos set nombre = ?, precio = ?, categoria_id=? , fecha_registro = ?, sku = ? where id = ?";
         try(
                 Connection conn = getConnection();
@@ -94,14 +90,12 @@ public class RepositoryProductImpl implements RepositoryProduct{
             stmt.setString(5, p.getSku());
             stmt.setInt(6, p.getId());
             stmt.executeUpdate();
-        } catch (SQLException e){
-            e.printStackTrace();
         }
 
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(int id) throws SQLException {
 
         String sql = "delete from productos where id = ?";
         try(
@@ -109,8 +103,6 @@ public class RepositoryProductImpl implements RepositoryProduct{
                 PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, id);
             stmt.executeUpdate();
-        } catch (SQLException e){
-            e.printStackTrace();
         }
 
     }
