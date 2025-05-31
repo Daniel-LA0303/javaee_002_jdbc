@@ -18,8 +18,11 @@ public class Trasacciones {
          */
         try(Connection conn = ConexionBaseDatos.getConnection()){
 
+        	
+        	// Inicio de la trasaccion
             if(conn.getAutoCommit()){
-                conn.setAutoCommit(false);
+                conn.setAutoCommit(false); // lo ponemos false ya que por defecto esta en true esto significa que en true no 
+                						   // hay transaccion mientras que en false ponemos que estaremos al pendiente con commit
             }
 
 
@@ -72,9 +75,9 @@ public class Trasacciones {
                 System.out.println("======== Lista de productos =========");
                 repositoryProduct.findAll().forEach(p -> System.out.println(p));
 
-                conn.commit();
+                conn.commit(); //se ejecuta si todas las consultas han salido bien
             }catch (SQLException exception){
-                conn.rollback();
+                conn.rollback(); // deshace todos los cambios si algo ha salido mal
                 exception.printStackTrace();
             }
         }
